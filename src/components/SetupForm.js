@@ -38,11 +38,12 @@ const SetupForm = ({
   };
 
   const onSubmit = (e) => {
-    localStorage.setItem('timeout', timer);
     e.preventDefault();
+    localStorage.setItem('timeout', timer);
     const url = `${API_ENDPOINT}?amount=${amount}&category=${typeOfCategory[category]}&difficulty=${difficulty}`;
     fetchQuestion(url);
   };
+
   return (
     <main>
       <section className='quiz quiz-small'>
