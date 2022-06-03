@@ -56,6 +56,7 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
       setIsFirst(true);
       return;
     }
+    setIndex(0);
     setIsModalOpen(true);
     let arr = Array.from(Array(amount).keys());
     let result = {};
@@ -85,6 +86,8 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
     setCorrect(numOfCorrect);
     setIsShowResult(true);
   };
+
+  console.log(finalResult);
 
   return (
     <main>
