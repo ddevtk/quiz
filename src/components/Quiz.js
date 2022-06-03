@@ -43,7 +43,11 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
   };
 
   const nextQuestion = () => {
+<<<<<<< HEAD
     if (index === amount - 1) return;
+=======
+    if (index === amount) return;
+>>>>>>> 0928977e081a25aba94902181da0f760b7b89295
     setIndex(index + 1);
   };
 
