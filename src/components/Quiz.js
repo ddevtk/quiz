@@ -36,7 +36,7 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
   };
 
   const nextQuestion = () => {
-    if (index === 9) return;
+    if (index === amount) return;
     setIndex(index + 1);
   };
 
