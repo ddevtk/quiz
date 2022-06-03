@@ -41,9 +41,6 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
   };
 
   const checkAnswer = (answer) => {
-    //   if (answer === correct_answer) {
-    //     setCorrect(correct + 1);
-    //   }
     if (isShowResult) {
       return;
     }
@@ -63,6 +60,8 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
     let arr = Array.from(Array(amount).keys());
     let result = {};
     let numOfCorrect = correct;
+
+    // set object of final result
     arr.forEach((el) => {
       if (!finalResult[el]) {
         result[el] = {
@@ -71,16 +70,19 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
         };
       }
     });
+
+    setFinalResult({
+      ...finalResult,
+      ...result,
+    });
+
+    // Count num of correct answer
     Object.values({ ...finalResult, ...result }).forEach((el) => {
       if (el['my_answer'] === el['correct_answer']) {
         numOfCorrect += 1;
       }
     });
     setCorrect(numOfCorrect);
-    setFinalResult({
-      ...finalResult,
-      ...result,
-    });
     setIsShowResult(true);
   };
 
@@ -98,6 +100,14 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
             Correct answers: {correct}/{amount}
           </span>
           {!isShowResult && <CountdownTimer submit={submit} />}
+          {isShowResult && (
+            <span className='tag is-primary is-large'>
+              {finalResult[index]['my_answer'] ===
+              finalResult[index]['correct_answer']
+                ? '1/1 point'
+                : '0/1 point'}
+            </span>
+          )}
         </div>
         <article className='container'>
           <h3
