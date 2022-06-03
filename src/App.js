@@ -1,25 +1,31 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
+import Loading from './components/Loading';
+import Quiz from './components/Quiz';
+import SetupForm from './components/SetupForm';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [isFirst, setIsFirst] = useState(true);
+  const [loading, setLoading] = useState(false);
+  const [amount, setAmount] = useState(10);
+
+  const [questions, setQuestions] = useState([]);
+
+  if (isFirst) {
+    return (
+      <SetupForm
+        setLoading={setLoading}
+        setIsFirst={setIsFirst}
+        setQuestions={setQuestions}
+        amount={amount}
+        setAmount={setAmount}
+      />
+    );
+  }
+  if (loading) {
+    return <Loading />;
+  }
+  return <Quiz questions={questions} amount={amount} setIsFirst={setIsFirst} />;
 }
 
 export default App;
