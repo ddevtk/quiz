@@ -1,8 +1,15 @@
 import React, { useState } from 'react';
-import CountdownTimer from './CountdownTimer';
+import ListQuestionIndexes from './ListQuestionIndexes';
 import Modal from './Modal';
+import QuizContent from './QuizContent';
+import QuizFooter from './QuizFooter';
+import QuizHeader from './QuizHeader';
 
 const Quiz = ({ questions, amount, setIsFirst }) => {
+  let arr = [];
+  for (let i = 0; i < amount; i++) {
+    arr.push(i);
+  }
   const [index, setIndex] = useState(0);
   const [correct, setCorrect] = useState(0);
   const [finalResult, setFinalResult] = useState({});
@@ -36,7 +43,7 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
   };
 
   const nextQuestion = () => {
-    if (index === 9) return;
+    if (index === amount - 1) return;
     setIndex(index + 1);
   };
 
@@ -58,7 +65,7 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
     }
     setIndex(0);
     setIsModalOpen(true);
-    let arr = Array.from(Array(amount).keys());
+
     let result = {};
     let numOfCorrect = correct;
 
@@ -87,8 +94,6 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
     setIsShowResult(true);
   };
 
-  console.log(finalResult);
-
   return (
     <main>
       <Modal
@@ -97,133 +102,40 @@ const Quiz = ({ questions, amount, setIsFirst }) => {
         setIsModalOpen={setIsModalOpen}
         setIsFirst={setIsFirst}
       />
-      <section className='quiz'>
-        <div className='quiz-title'>
-          <span className='tag is-primary is-large'>
-            Correct answers: {correct}/{amount}
-          </span>
-          {!isShowResult && <CountdownTimer submit={submit} />}
-          {isShowResult && (
-            <span className='tag is-primary is-large'>
-              {finalResult[index]['my_answer'] ===
-              finalResult[index]['correct_answer']
-                ? '1/1 point'
-                : '0/1 point'}
-            </span>
-          )}
-        </div>
-        <article className='container'>
-          <h3
-            className='title is-3 mt-6'
-            style={{ textAlign: 'center' }}
-            dangerouslySetInnerHTML={{ __html: question }}
-          />
-          <div style={{ textAlign: 'center' }}>
-            {!isShowResult &&
-              finalAnswers[index]?.map((answer, id) => {
-                return (
-                  <button
-                    style={{ width: '75%' }}
-                    key={id}
-                    //   className='button is-info mb-4'
-                    className={`${
-                      finalResult[index]
-                        ? finalResult[index]['my_answer'] === answer
-                          ? 'button is-warning mb-4'
-                          : 'button is-info mb-4'
-                        : 'button is-info mb-4'
-                    }`}
-                    dangerouslySetInnerHTML={{ __html: answer }}
-                    onClick={() => checkAnswer(answer)}
-                  />
-                );
-              })}
-            {isShowResult &&
-              finalAnswers[index]?.map((answer, id) => {
-                const myAnswer = finalResult[index]['my_answer'];
-                const correctAnswer = finalResult[index]['correct_answer'];
-                if (!myAnswer) {
-                  return (
-                    <button
-                      style={{ width: '75%' }}
-                      key={id}
-                      className={`${
-                        correctAnswer === answer
-                          ? 'button is-warning mb-4'
-                          : 'button is-info mb-4'
-                      }`}
-                      dangerouslySetInnerHTML={{ __html: answer }}
-                      onClick={() => checkAnswer(answer)}
-                    />
-                  );
-                }
 
-                if (
-                  (myAnswer === answer && myAnswer === correctAnswer) ||
-                  (answer === correctAnswer && answer !== myAnswer)
-                ) {
-                  return (
-                    <button
-                      style={{ width: '75%' }}
-                      key={id}
-                      className='button is-success mb-4'
-                      dangerouslySetInnerHTML={{ __html: answer }}
-                      onClick={() => checkAnswer(answer)}
-                    />
-                  );
-                }
-                if (answer !== myAnswer && answer !== correctAnswer) {
-                  return (
-                    <button
-                      style={{ width: '75%' }}
-                      key={id}
-                      className='button is-info mb-4'
-                      dangerouslySetInnerHTML={{ __html: answer }}
-                      onClick={() => checkAnswer(answer)}
-                    />
-                  );
-                }
-                return (
-                  <button
-                    style={{ width: '75%' }}
-                    key={id}
-                    className='button is-danger mb-4'
-                    dangerouslySetInnerHTML={{ __html: answer }}
-                    onClick={() => checkAnswer(answer)}
-                  />
-                );
-              })}
-          </div>
-          <div
-            className='mt-6'
-            style={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-            }}
-          >
-            <button
-              className='button is-info is-outlined'
-              onClick={previousQuestion}
-            >
-              Previous question
-            </button>
-            <button className='button is-info' onClick={submit}>
-              {!isShowResult ? 'Submit' : 'Play again'}
-            </button>
-            <button
-              className='button is-info is-outlined'
-              onClick={nextQuestion}
-            >
-              Next question
-            </button>
-          </div>
-          <div style={{ textAlign: 'right' }} className='mt-4'>
-            <span className='tag is-info'>
-              {`${index + 1}/${questions.length}`}
-            </span>
-          </div>
-        </article>
+      <section className='quiz'>
+        <ListQuestionIndexes
+          isShowResult={isShowResult}
+          setIndex={setIndex}
+          arr={arr}
+          finalResult={finalResult}
+        />
+        <QuizHeader
+          amount={amount}
+          correct={correct}
+          index={index}
+          finalResult={finalResult}
+          isShowResult={isShowResult}
+          submit={submit}
+        />
+        <QuizContent
+          checkAnswer={checkAnswer}
+          finalAnswers={finalAnswers}
+          finalResult={finalResult}
+          index={index}
+          isShowResult={isShowResult}
+          question={question}
+        />
+        <QuizFooter
+          amount={amount}
+          finalResult={finalResult}
+          index={index}
+          isShowResult={isShowResult}
+          nextQuestion={nextQuestion}
+          previousQuestion={previousQuestion}
+          questions={questions}
+          submit={submit}
+        />
       </section>
     </main>
   );

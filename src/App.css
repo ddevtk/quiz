@@ -72,10 +72,10 @@ main {
 .quiz {
   width: 90vw;
   max-width: var(--max-width);
-  margin: 4rem auto;
+  min-height: 90vh;
   background: var(--clr-white);
   border-radius: var(--radius);
-  padding: 3rem;
+  padding: 2rem;
 }
 .quiz-title {
   display: flex;

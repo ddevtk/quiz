@@ -59,7 +59,7 @@ const SetupForm = ({
                 min={1}
                 max={20}
                 value={amount}
-                onChange={(e) => setAmount(e.target.value)}
+                onChange={(e) => setAmount(e.target.value * 1)}
               />
             </div>
           </div>
